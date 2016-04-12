@@ -5,6 +5,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Klasa wczytujaca dane z plikow i zapisujaca je w ArrayList
+ *
+ */
 public class DataFileReader {
 	private ArrayList<String> dataList;
 
@@ -26,14 +30,10 @@ public class DataFileReader {
 				e.printStackTrace();
 			}
 		}
-		setDataList(tmpList);
+		dataList = tmpList;
 	}
 
 	public ArrayList<String> getDataList() {
 		return dataList;
-	}
-
-	public void setDataList(ArrayList<String> dataList) {
-		this.dataList = dataList;
 	}
 }

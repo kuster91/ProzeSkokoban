@@ -1,0 +1,11 @@
+Celem gry jest przejscie wszystkich poziomów gry w jak najkrótszym czasie.
+
+Poziom uznaje siê za zakoñczony w momencie ustawienia wszystkich skrzyñ
+na wyznaczonych miejscach, przed up³ywem przyznanego czasu.
+
+Poddanie siê lub przekroczenie czasu skutkuje utrat¹ ¿ycia.
+
+Gra koñczy siê w momencie utraty ¿ycia lub pozytywnego
+zakoñczenia wszystkich plansz.
+
+Jeœli wynik uprawnia u¿ytkownik zostanie dopisany do listy TOP.
