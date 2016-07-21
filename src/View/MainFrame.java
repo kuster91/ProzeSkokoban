@@ -4,40 +4,93 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 /**
  *
  * Glowna ramka programu
  *
  */
 public class MainFrame extends JFrame {
+	private Future<?> gameTask;
+	int pierwszy_raz=1;
+	private ExecutorService gameExecutor = Executors.newSingleThreadExecutor();
+
+	/**
+	 * Zmienna przechowujaca tytul gry
+	 */
 	private final static String TITLE = "Sokoban v1.0.0";
+	/**
+	 * Zmienna przechowujaca standardowa szerokosc okna gry
+	 */
 	private final static int DEFAULT_WIDTH = 520;
+	/**
+	 * Zmienna przechowujaca standardowa wysokosc okna gry
+	 */
 	private final static int DEFAULT_HIGHT = 570;
-	private Action saveAction;
-	private Action newGameAction;
-	private GameAreaPanel areaPanel;
-	private GameStatePanel statePanel;
-/**
- * Bezparametrowy konstruktor tworzacy glowna ramke aplikacji
- */
+	/**
+	 * mapNames - przechowuje liste dostepnych poziomow
+	 */
+	private String mapNames = "listaMap.txt";
+	/**
+	 * Parametr odpowiedzialny za wybrany poziom trudnosci hard - true
+	 */
+	private boolean status = false;
+	/**
+	 * Zmienna przechowujaca nazwe gracza
+	 */
+	private String nickname;
+
+	/**
+	 * Bezparametrowy konstruktor tworzacy glowna ramke aplikacji
+	 */
 	public MainFrame() {
 		setTitle(TITLE);
 		setVisible(true);
 		setBounds(new Rectangle(DEFAULT_WIDTH, DEFAULT_HIGHT));
 		makeMenu();
+		this.setMinimumSize(new Dimension(400, 400));
 		this.setResizable(true);
-//		Image image = new ImageIcon("icon.jpg").getImage();
-//		setIconImage(image);
+		// startNewGame(); // this does work
+		revalidate();
 	}
-/**
- * uruchomienie nowej gry
- */
-	private void newGameStart() {
-		add(new GameAreaPanel("testLevel.txt"));
+
+	/**
+	 * uruchomienie nowej gry
+	 */
+	// Do new Game doodalem this(potrzebny do wylapywania watku, i dodalem
+	// wysokosc i szerokosc, potrzebne do ustalanie wielkosc tekstur
+
+	public void startNewGame() {
+//		MainFram frame_c= new MainFrame();
+//		fram_c = this.clone();
+//		if(
+
+		if(pierwszy_raz!=1)
+		{
+			this.dispose();
+			JFrame frame = new View.MainFrame();
+		}
+		if(pierwszy_raz==1)
+			pierwszy_raz++;
+		if (gameTask != null)
+			gameTask.cancel(true);
+		gameTask = gameExecutor.submit(new MyRunnable(this, DEFAULT_WIDTH, DEFAULT_HIGHT, mapNames) {
+		});
 	}
-/**
- * Metoda tworzaca menu
- */
+
+	// /**
+	// * rozpoczecie gry
+	// */
+	// private void startGame() {
+	// new LoginPanel2(this);
+	// }
+
+	/**
+	 * Method creating mainMenu
+	 */
 	private void makeMenu() {
 		JMenuBar menuBar = new JMenuBar();
 
@@ -45,7 +98,12 @@ public class MainFrame extends JFrame {
 
 		menuGame.add(new AbstractAction("Nowa gra") {
 			public void actionPerformed(ActionEvent event) {
-				newGameStart();
+				JFrame nickInfo = new JFrame();
+				String tmpNick = "";
+				tmpNick = JOptionPane.showInputDialog("Podaj swoj nick");
+				setNickname(tmpNick);
+				startNewGame();
+				// startGame();
 			}
 		});
 
@@ -91,6 +149,13 @@ public class MainFrame extends JFrame {
 		JRadioButtonMenuItem hardLevel = new JRadioButtonMenuItem("Poziom trudny");
 		levelSettings.add(easyLevel);
 		levelSettings.add(hardLevel);
+		hardLevel.addActionListener(evt -> {
+			status = true;
+
+		});
+		easyLevel.addActionListener(e -> {
+			status = false;
+		});
 		ButtonGroup networkSettings = new ButtonGroup();
 		JRadioButtonMenuItem online = new JRadioButtonMenuItem("Online");
 		JRadioButtonMenuItem offline = new JRadioButtonMenuItem("Offline");
@@ -138,5 +203,27 @@ public class MainFrame extends JFrame {
 
 		this.setJMenuBar(menuBar);
 
+	}
+
+	/**
+	 * Metoda zwracajaca nazwe gracza
+	 * 
+	 * @return String zawierajacy nazwe gracza
+	 */
+	public String getNickname() {
+		return nickname;
+	}
+
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	/**
+	 * 
+	 * @return status gry
+	 */
+	public boolean isStatus() {
+		return status;
 	}
 }

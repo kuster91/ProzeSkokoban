@@ -1,0 +1,5 @@
+lives1
+czas2
+punkty10
+bonuspktmax3
+bonuspktmin1

@@ -1,3 +1,12 @@
-Marek 123
-Zenek 24
-Leon 1
+Punkty Nick
+
+5428 cos
+739 a
+534 Nowy gracz
+529 asd
+33 dziala
+29 asd
+10 
+1 	przed ostatni
+0 	zawsze ostatni
+
